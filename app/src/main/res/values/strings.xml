@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Brandi</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="kakao_app_key">ff3041b14862baa21b48c882435d9fb8</string>
 </resources>
