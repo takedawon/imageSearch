@@ -6,7 +6,9 @@ import androidx.fragment.app.viewModels
 import com.lanic.brandi.R
 import com.lanic.brandi.base.BaseFragment
 import com.lanic.brandi.databinding.FragmentSearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(
     layoutId = R.layout.fragment_search
 ) {
@@ -16,6 +18,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getSearchImage("brandi", "1", "30")
 
     }
 }
