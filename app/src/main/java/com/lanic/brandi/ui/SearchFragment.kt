@@ -13,7 +13,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
     layoutId = R.layout.fragment_search
 ) {
 
-    val viewModel by viewModels<SearchViewModel>()
+    private val viewModel by viewModels<SearchViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
