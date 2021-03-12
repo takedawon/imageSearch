@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.lanic.brandi.ui.SearchFragment"
+        android:name="com.lanic.brandi.ui.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search" />
 </navigation>

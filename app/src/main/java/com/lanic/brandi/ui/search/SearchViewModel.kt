@@ -1,4 +1,4 @@
-package com.lanic.brandi.ui
+package com.lanic.brandi.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
