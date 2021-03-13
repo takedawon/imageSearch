@@ -2,6 +2,7 @@ package com.lanic.brandi.data.repository
 
 import com.lanic.brandi.data.response.SearchResponse
 import com.lanic.brandi.network.SearchService
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 

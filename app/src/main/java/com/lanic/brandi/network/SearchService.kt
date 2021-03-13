@@ -1,6 +1,7 @@
 package com.lanic.brandi.network
 
 import com.lanic.brandi.data.response.SearchResponse
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Header
