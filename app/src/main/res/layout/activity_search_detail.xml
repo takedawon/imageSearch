@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.lanic.brandi.data.response.Document" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,11 +15,11 @@
         android:layout_height="match_parent"
         tools:context=".ui.search.SearchDetailFragment">
 
-        <TextView
+        <ImageView
             android:id="@+id/iv_search_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="뭐냐대체"
+            app:image_url="@{item.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
