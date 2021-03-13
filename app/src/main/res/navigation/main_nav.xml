@@ -21,5 +21,9 @@
     <activity
         android:id="@+id/searchDetailActivity"
         android:name="com.lanic.brandi.ui.search.SearchDetailActivity"
-        android:label="SearchDetailActivity" />
+        android:label="SearchDetailActivity" >
+        <argument
+            android:name="item"
+            app:argType="com.lanic.brandi.data.response.Document" />
+    </activity>
 </navigation>

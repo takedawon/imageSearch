@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.lanic.brandi.R
 import com.lanic.brandi.data.response.Document
 import com.lanic.brandi.databinding.ItemSearchImageBinding
 
-class SearchImageAdapter(private val clickListener: View.OnClickListener) :
+class SearchImageAdapter :
     ListAdapter<Document, ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {
         override fun areItemsTheSame(oldItem: Document, newItem: Document): Boolean {
             return oldItem.imageUrl == oldItem.imageUrl
@@ -34,17 +35,21 @@ class SearchImageAdapter(private val clickListener: View.OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position))
     }
 }
 
 class ImageViewHolder(private val binding: ItemSearchImageBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(document: Document, clickListener: View.OnClickListener) {
+    fun bind(document: Document) {
         binding.apply {
             item = document
-            ivImage.setOnClickListener(clickListener)
+            ivImage.setOnClickListener { view ->
+                Navigation.findNavController(view).navigate(
+                    SearchFragmentDirections.actionToSearchDetailActivity(item = document)
+                )
+            }
         }
     }
 }

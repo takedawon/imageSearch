@@ -1,15 +1,18 @@
 package com.lanic.brandi.data.response
 
-
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class SearchResponse(
     @SerializedName("documents")
     val documents: List<Document>,
     @SerializedName("meta")
     val meta: Meta
-)
+) : Parcelable
 
+@Parcelize
 data class Document(
     @SerializedName("collection")
     val collection: String,
@@ -27,8 +30,9 @@ data class Document(
     val thumbnailUrl: String,
     @SerializedName("width")
     val width: Int
-)
+) : Parcelable
 
+@Parcelize
 data class Meta(
     @SerializedName("is_end")
     val isEnd: Boolean,
@@ -36,4 +40,4 @@ data class Meta(
     val pageableCount: Int,
     @SerializedName("total_count")
     val totalCount: Int
-)
+) : Parcelable

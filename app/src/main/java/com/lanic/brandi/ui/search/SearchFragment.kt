@@ -20,11 +20,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 ) {
 
     private val viewModel by viewModels<SearchViewModel>()
-    private val imageAdapter by lazy {
-        SearchImageAdapter {
-            findNavController().navigate(SearchFragmentDirections.actionToSearchDetailActivity())
-        }
-    }
+    private val imageAdapter by lazy { SearchImageAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
