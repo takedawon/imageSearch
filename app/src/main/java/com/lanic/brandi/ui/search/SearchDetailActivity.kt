@@ -1,7 +1,6 @@
 package com.lanic.brandi.ui.search
 
 import android.os.Bundle
-import androidx.navigation.NavArgs
 import androidx.navigation.navArgs
 import com.lanic.brandi.R
 import com.lanic.brandi.base.BaseActivity

@@ -4,4 +4,6 @@
     <string name="kakao_app_key">ff3041b14862baa21b48c882435d9fb8</string>
     <string name="input_search_text">검색어를 입력해주세요.</string>
     <string name="no_search_result">검색 결과가 없습니다.</string>
+    <string name="search_site_name">출처 : %s</string>
+    <string name="search_date_time">문서 작성 시간 $s</string>
 </resources>
