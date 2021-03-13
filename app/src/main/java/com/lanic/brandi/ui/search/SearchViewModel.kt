@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _isSearchResult: MutableLiveData<Boolean> = MutableLiveData()
     var isSearchResult: LiveData<Boolean> = _isSearchResult
 
-    var searchText = MutableLiveData("")
+    var searchText = MutableLiveData<String>()
 
     var publishSubject: PublishSubject<String> = PublishSubject.create()
 

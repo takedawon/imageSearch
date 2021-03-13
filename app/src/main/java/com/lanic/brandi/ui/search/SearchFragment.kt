@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lanic.brandi.R
 import com.lanic.brandi.base.BaseFragment
@@ -19,7 +20,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 ) {
 
     private val viewModel by viewModels<SearchViewModel>()
-    private val imageAdapter by lazy { SearchImageAdapter() }
+    private val imageAdapter by lazy {
+        SearchImageAdapter {
+            findNavController().navigate(SearchFragmentDirections.actionToSearchDetailActivity())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,9 +40,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             imageAdapter.submitList(images)
         })
 
-        viewModel.searchText.observe(viewLifecycleOwner, Observer {
+        viewModel.searchText.observe(viewLifecycleOwner, Observer { searchText ->
             imageAdapter.submitList(null)
-            viewModel.publishSubject.onNext(it)
+            viewModel.publishSubject.onNext(searchText)
         })
 
         viewModel.isSearchResult.observe(viewLifecycleOwner, Observer { isResultExist ->
@@ -57,8 +62,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
         viewModel.publishSubject.debounce(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                viewModel.getSearchImage(it, "1", "30")
+            .subscribe { searchText ->
+                if (!searchText.isNullOrBlank())
+                    viewModel.getSearchImage(searchText, "1", "30")
             }
     }
 }
