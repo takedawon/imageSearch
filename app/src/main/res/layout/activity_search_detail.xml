@@ -20,22 +20,6 @@
             android:layout_height="wrap_content"
             tools:context=".ui.search.SearchDetailFragment">
 
-            <TextView
-                android:id="@+id/tv_site_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/tv_date_time"
-                app:layout_constraintStart_toStartOf="@+id/tv_date_time"
-                tools:text="@string/search_site_name" />
-
-            <TextView
-                android:id="@+id/tv_date_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_search_detail"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="@string/search_date_time" />
-
             <ImageView
                 android:id="@+id/iv_search_detail"
                 android:layout_width="match_parent"
@@ -46,6 +30,27 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_site_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.format(@string/search_site_name, item.displaySiteName)}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_date_time"
+                app:layout_constraintStart_toStartOf="@+id/tv_date_time"
+                app:view_visibility="@{item.displaySiteName}"
+                tools:text="@string/search_site_name" />
+
+            <TextView
+                android:id="@+id/tv_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.format(@string/search_date_time, item.datetime)}"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_search_detail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:view_visibility="@{item.datetime}"
+                tools:text="@string/search_date_time" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
