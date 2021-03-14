@@ -59,9 +59,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { searchText ->
                 imageAdapter.submitList(null)
-                if (!searchText.isNullOrBlank()) {
-                    viewModel.getSearchImage(searchText, "1", "30")
+                if (searchText.isNullOrBlank().not()) {
+                    viewModel.fetchKeyword(searchText)
                 }
             }
+    }
+
+    companion object {
+        const val LOAD_DATA_SIZE = "30"
     }
 }

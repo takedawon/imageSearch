@@ -3,6 +3,9 @@ package com.lanic.brandi.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.lanic.brandi.data.repository.SearchRepository
 import com.lanic.brandi.data.response.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,10 +22,11 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
     ViewModel() {
 
-    private val compositeDisposable = CompositeDisposable()
+    private var searchDataSource: SearchDataSource? = null
 
-    private val _searchImage = MutableLiveData<List<Document>>()
-    val searchImage: LiveData<List<Document>> = _searchImage
+    val compositeDisposable = CompositeDisposable()
+
+    val searchImage: LiveData<PagedList<Document>> = createSearchLiveData()
 
     private val _isSearchResult: MutableLiveData<Boolean> = MutableLiveData()
     var isSearchResult: LiveData<Boolean> = _isSearchResult
@@ -31,20 +35,34 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     var publishSubject: PublishSubject<String> = PublishSubject.create()
 
-    fun getSearchImage(query: String, page: String, size: String) {
-        searchRepository.getSearchImage(query, page, size)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                if (response.documents.isNullOrEmpty()) {
-                    _isSearchResult.value = false
-                } else {
-                    _isSearchResult.value = true
-                    _searchImage.value = response.documents
+    fun createSearchLiveData(): LiveData<PagedList<Document>> {
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(30)
+            .setPageSize(30)
+            .setPrefetchDistance(10)
+            .build()
+
+        val factory = object : DataSource.Factory<Int, Document>() {
+            override fun create(): DataSource<Int, Document> {
+                return SearchDataSource(
+                    { searchText.value ?: "" },
+                    searchRepository,
+                    compositeDisposable
+                ).also {
+                    searchDataSource = it
                 }
-            }, {
-                Timber.e(it)
-            }).addTo(compositeDisposable)
+            }
+        }
+
+        return LivePagedListBuilder(
+            factory,
+            config
+        ).build()
+    }
+
+    fun fetchKeyword(query: String) {
+        searchText.value = query
+        searchDataSource?.invalidate()
     }
 
     override fun onCleared() {

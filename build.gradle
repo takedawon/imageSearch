@@ -6,6 +6,7 @@ buildscript {
         activity_version = "1.2.0"
         nav_version = "2.3.4"
         hilt_version = "2.33-beta"
+        paging_version = "2.1.2"
         retrofit_version = "2.9.0"
         okhttp_version = "4.9.0"
         timber_version = "4.7.1"

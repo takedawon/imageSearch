@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,7 @@ import com.lanic.brandi.data.response.Document
 import com.lanic.brandi.databinding.ItemSearchImageBinding
 
 class SearchImageAdapter :
-    ListAdapter<Document, ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {
+    PagedListAdapter<Document, ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {
         override fun areItemsTheSame(oldItem: Document, newItem: Document): Boolean {
             return oldItem.imageUrl == oldItem.imageUrl
         }
@@ -34,7 +35,9 @@ class SearchImageAdapter :
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { item ->
+            holder.bind(item)
+        }
     }
 }
 
