@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.lanic.brandi.R
 import com.lanic.brandi.base.BaseFragment
 import com.lanic.brandi.databinding.FragmentSearchBinding
+import com.lanic.brandi.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(
@@ -30,6 +28,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = imageAdapter
         }
+
+        viewModel.observeSearchQuery()
 
         viewModel.searchImage.observe(viewLifecycleOwner, Observer { images ->
             imageAdapter.submitList(images)
@@ -53,16 +53,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             }
         })
 
-        viewModel.publishSubject.debounce(1000, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { searchText ->
-                imageAdapter.submitList(null)
-                if (searchText.isNullOrBlank().not()) {
-                    viewModel.fetchKeyword(searchText)
-                }
-            }
+        viewModel.clear.observe(viewLifecycleOwner, EventObserver {
+            imageAdapter.submitList(null)
+        })
     }
 
     companion object {

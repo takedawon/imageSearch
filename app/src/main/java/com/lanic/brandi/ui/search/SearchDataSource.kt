@@ -1,5 +1,6 @@
 package com.lanic.brandi.ui.search
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.lanic.brandi.data.repository.SearchRepository
 import com.lanic.brandi.data.response.Document
@@ -11,12 +12,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
-//https://dapi.kakao.com/v2/search/image?query=%ED%95%98%ED%95%98&page=1&size=30
 class SearchDataSource constructor(
     val text: () -> String,
-    val searchRepository: SearchRepository,
-    val compositeDisposable: CompositeDisposable,
+    private val searchRepository: SearchRepository,
+    private val compositeDisposable: CompositeDisposable,
+    private val _isSearchResult: MutableLiveData<Boolean>
 ) : PageKeyedDataSource<Int, Document>() {
 
     private var searchQuery: String = ""
@@ -32,8 +34,13 @@ class SearchDataSource constructor(
             searchQuery = text
 
             getSearchImage(searchQuery, page)
-                .subscribeBy(onSuccess = {
-                    callback.onResult(it.documents, null, page + 1)
+                .subscribeBy(onSuccess = { response ->
+                    if (response.meta.isEnd) {
+                        _isSearchResult.value = false
+                    } else {
+                        _isSearchResult.value = true
+                        callback.onResult(response.documents, null, page + 1)
+                    }
                 }, onError = {
 
                 }).addTo(compositeDisposable)
@@ -46,7 +53,7 @@ class SearchDataSource constructor(
     ) {
         getSearchImage(searchQuery, params.key)
             .subscribeBy(onSuccess = {
-                callback.onResult(it.documents, params.key-1)
+                callback.onResult(it.documents, params.key - 1)
             }, onError = {
 
             }).addTo(compositeDisposable)
@@ -58,7 +65,7 @@ class SearchDataSource constructor(
     ) {
         getSearchImage(searchQuery, params.key)
             .subscribeBy(onSuccess = {
-                callback.onResult(it.documents, params.key+1)
+                callback.onResult(it.documents, params.key + 1)
             }, onError = {
 
             }).addTo(compositeDisposable)

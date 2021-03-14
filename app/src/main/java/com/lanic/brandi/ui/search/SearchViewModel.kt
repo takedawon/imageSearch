@@ -8,6 +8,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.lanic.brandi.data.repository.SearchRepository
 import com.lanic.brandi.data.response.Document
+import com.lanic.brandi.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -26,16 +27,34 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     val compositeDisposable = CompositeDisposable()
 
-    val searchImage: LiveData<PagedList<Document>> = createSearchLiveData()
-
     private val _isSearchResult: MutableLiveData<Boolean> = MutableLiveData()
     var isSearchResult: LiveData<Boolean> = _isSearchResult
+
+    private val _clear: MutableLiveData<Event<Unit>> = MutableLiveData()
+    var clear: LiveData<Event<Unit>> = _clear
+
+    val searchImage: LiveData<PagedList<Document>> = createSearchLiveData()
 
     var searchText = MutableLiveData<String>()
 
     var publishSubject: PublishSubject<String> = PublishSubject.create()
 
-    fun createSearchLiveData(): LiveData<PagedList<Document>> {
+    fun observeSearchQuery() {
+        publishSubject
+            .subscribeOn(Schedulers.computation())
+            .distinctUntilChanged()
+            .debounce(1000, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { searchText ->
+                _clear.value = Event(Unit)
+                if (searchText.isNullOrBlank().not()) {
+                    fetchKeyword(searchText)
+                }
+            }
+            .addTo(compositeDisposable)
+    }
+
+    private fun createSearchLiveData(): LiveData<PagedList<Document>> {
         val config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(30)
             .setPageSize(30)
@@ -47,7 +66,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                 return SearchDataSource(
                     { searchText.value ?: "" },
                     searchRepository,
-                    compositeDisposable
+                    compositeDisposable,
+                    _isSearchResult
                 ).also {
                     searchDataSource = it
                 }
@@ -60,7 +80,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         ).build()
     }
 
-    fun fetchKeyword(query: String) {
+    private fun fetchKeyword(query: String) {
         searchText.value = query
         searchDataSource?.invalidate()
     }
