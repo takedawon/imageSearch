@@ -36,7 +36,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
         })
 
         viewModel.searchText.observe(viewLifecycleOwner, Observer { searchText ->
-            imageAdapter.submitList(null)
             viewModel.publishSubject.onNext(searchText)
         })
 
@@ -56,10 +55,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 
         viewModel.publishSubject.debounce(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
+            .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { searchText ->
-                if (!searchText.isNullOrBlank())
+                imageAdapter.submitList(null)
+                if (!searchText.isNullOrBlank()) {
                     viewModel.getSearchImage(searchText, "1", "30")
+                }
             }
     }
 }
