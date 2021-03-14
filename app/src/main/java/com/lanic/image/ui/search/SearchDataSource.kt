@@ -17,7 +17,7 @@ class SearchDataSource constructor(
     val text: () -> String,
     private val searchRepository: SearchRepository,
     private val compositeDisposable: CompositeDisposable,
-    private val _isSearchResult: MutableLiveData<Boolean>
+    private val isSearchResult: MutableLiveData<Boolean>
 ) : PageKeyedDataSource<Int, Document>() {
 
     private var searchQuery: String = ""
@@ -35,9 +35,9 @@ class SearchDataSource constructor(
             getSearchImage(searchQuery, page)
                 .subscribeBy(onSuccess = { response ->
                     if (response.meta.isEnd) {
-                        _isSearchResult.value = false
+                        isSearchResult.value = false
                     } else {
-                        _isSearchResult.value = true
+                        isSearchResult.value = true
                         callback.onResult(response.documents, null, page + 1)
                     }
                 }, onError = {

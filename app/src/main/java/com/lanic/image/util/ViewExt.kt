@@ -17,6 +17,7 @@ fun setImageUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
         .placeholder(imageView.context.getShimmer())
+        .error(R.drawable.ic_error_404)
         .into(imageView)
 }
 
