@@ -1,4 +1,4 @@
-package com.lanic.brandi.ui.search
+package com.lanic.image.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,11 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lanic.brandi.R
-import com.lanic.brandi.data.response.Document
-import com.lanic.brandi.databinding.ItemSearchImageBinding
+import com.lanic.image.R
+import com.lanic.image.data.response.Document
+import com.lanic.image.databinding.ItemSearchImageBinding
 
 class SearchImageAdapter :
     PagedListAdapter<Document, ImageViewHolder>(object : DiffUtil.ItemCallback<Document>() {

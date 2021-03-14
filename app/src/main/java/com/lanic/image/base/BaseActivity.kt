@@ -1,4 +1,4 @@
-package com.lanic.brandi.base
+package com.lanic.image.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

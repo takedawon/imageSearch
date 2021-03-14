@@ -1,18 +1,17 @@
-package com.lanic.brandi.ui.search
+package com.lanic.image.ui.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.lanic.brandi.data.repository.SearchRepository
-import com.lanic.brandi.data.response.Document
-import com.lanic.brandi.data.response.SearchResponse
-import com.lanic.brandi.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
+import com.lanic.image.data.repository.SearchRepository
+import com.lanic.image.data.response.Document
+import com.lanic.image.data.response.SearchResponse
+import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 
 class SearchDataSource constructor(
     val text: () -> String,

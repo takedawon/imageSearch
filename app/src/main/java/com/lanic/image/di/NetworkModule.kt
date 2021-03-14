@@ -1,6 +1,6 @@
-package com.lanic.brandi.di
+package com.lanic.image.di
 
-import com.lanic.brandi.BuildConfig
+import com.lanic.image.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

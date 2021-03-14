@@ -1,10 +1,10 @@
-package com.lanic.brandi.ui.search
+package com.lanic.image.ui.search
 
 import android.os.Bundle
 import androidx.navigation.navArgs
-import com.lanic.brandi.R
-import com.lanic.brandi.base.BaseActivity
-import com.lanic.brandi.databinding.ActivitySearchDetailBinding
+import com.lanic.image.R
+import com.lanic.image.base.BaseActivity
+import com.lanic.image.databinding.ActivitySearchDetailBinding
 
 class SearchDetailActivity : BaseActivity<ActivitySearchDetailBinding>(
     layoutId = R.layout.activity_search_detail

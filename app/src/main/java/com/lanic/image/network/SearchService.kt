@@ -1,7 +1,6 @@
-package com.lanic.brandi.network
+package com.lanic.image.network
 
-import com.lanic.brandi.data.response.SearchResponse
-import io.reactivex.rxjava3.core.Observable
+import com.lanic.image.data.response.SearchResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Header

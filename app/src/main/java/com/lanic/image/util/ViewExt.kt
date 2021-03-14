@@ -1,4 +1,4 @@
-package com.lanic.brandi.util
+package com.lanic.image.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -10,7 +10,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
-import com.lanic.brandi.R
+import com.lanic.image.R
 
 @BindingAdapter(value = ["image_url"])
 fun setImageUrl(imageView: ImageView, url: String) {

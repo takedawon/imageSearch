@@ -1,8 +1,7 @@
-package com.lanic.brandi.data.repository
+package com.lanic.image.data.repository
 
-import com.lanic.brandi.data.response.SearchResponse
-import com.lanic.brandi.network.SearchService
-import io.reactivex.rxjava3.core.Observable
+import com.lanic.image.data.response.SearchResponse
+import com.lanic.image.network.SearchService
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 

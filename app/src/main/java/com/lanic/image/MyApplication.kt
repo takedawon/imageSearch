@@ -1,11 +1,11 @@
-package com.lanic.brandi
+package com.lanic.image
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class BrandiApplication : Application() {
+class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

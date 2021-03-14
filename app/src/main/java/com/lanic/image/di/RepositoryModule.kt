@@ -1,8 +1,8 @@
-package com.lanic.brandi.di
+package com.lanic.image.di
 
-import com.lanic.brandi.data.repository.SearchRepository
-import com.lanic.brandi.data.repository.SearchRepositoryImpl
-import com.lanic.brandi.network.SearchService
+import com.lanic.image.data.repository.SearchRepository
+import com.lanic.image.data.repository.SearchRepositoryImpl
+import com.lanic.image.network.SearchService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

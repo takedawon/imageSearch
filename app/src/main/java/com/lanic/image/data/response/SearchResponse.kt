@@ -1,4 +1,4 @@
-package com.lanic.brandi.data.response
+package com.lanic.image.data.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

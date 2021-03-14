@@ -1,4 +1,4 @@
-package com.lanic.brandi.base
+package com.lanic.image.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.lanic.brandi.R
+import com.lanic.image.R
 
 open class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment() {
 

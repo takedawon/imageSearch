@@ -1,4 +1,4 @@
-package com.lanic.brandi
+package com.lanic.image
 
 import org.junit.Test
 
