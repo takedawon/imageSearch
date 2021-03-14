@@ -15,14 +15,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
     ViewModel() {
-
-    private var searchDataSource: SearchDataSource? = null
 
     val compositeDisposable = CompositeDisposable()
 
@@ -36,13 +35,20 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     var searchText = MutableLiveData<String>()
 
-    var publishSubject: PublishSubject<String> = PublishSubject.create()
+    lateinit var publishSubject: PublishSubject<String>
 
-    fun observeSearchQuery() {
+    private var searchDataSource: SearchDataSource? = null
+
+    init {
+        publishSubject = PublishSubject.create()
+        observeSearchQuery()
+    }
+
+    private fun observeSearchQuery() {
         publishSubject
-            .subscribeOn(Schedulers.computation())
-            .distinctUntilChanged()
             .debounce(1000, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { searchText ->
                 _clear.value = Event(Unit)

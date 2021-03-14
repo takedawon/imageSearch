@@ -29,8 +29,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             adapter = imageAdapter
         }
 
-        viewModel.observeSearchQuery()
-
         viewModel.searchImage.observe(viewLifecycleOwner, Observer { images ->
             imageAdapter.submitList(images)
         })
