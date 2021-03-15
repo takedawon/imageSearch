@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ServiceModule {
+object ServiceModule {
 
     @Provides
     fun provideSearchService(retrofit: Retrofit): SearchService {

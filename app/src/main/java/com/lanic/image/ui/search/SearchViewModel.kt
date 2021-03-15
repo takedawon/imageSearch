@@ -35,7 +35,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     var searchText = MutableLiveData<String>()
 
-    lateinit var publishSubject: PublishSubject<String>
+    var publishSubject: PublishSubject<String>
 
     private var searchDataSource: SearchDataSource? = null
 
