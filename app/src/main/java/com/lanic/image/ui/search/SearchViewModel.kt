@@ -28,6 +28,9 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _isSearchResult: MutableLiveData<Boolean> = MutableLiveData()
     var isSearchResult: LiveData<Boolean> = _isSearchResult
 
+    private val _error: MutableLiveData<Event<String>> = MutableLiveData()
+    var error: LiveData<Event<String>> = _error
+
     private val _clear: MutableLiveData<Event<Unit>> = MutableLiveData()
     var clear: LiveData<Event<Unit>> = _clear
 
@@ -72,7 +75,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                     { searchText.value ?: "" },
                     searchRepository,
                     compositeDisposable,
-                    _isSearchResult
+                    _isSearchResult,
+                    _error,
                 ).also {
                     searchDataSource = it
                 }

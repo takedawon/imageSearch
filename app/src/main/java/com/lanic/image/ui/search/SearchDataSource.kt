@@ -6,6 +6,8 @@ import com.lanic.image.data.repository.SearchRepository
 import com.lanic.image.data.response.Document
 import com.lanic.image.data.response.SearchResponse
 import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
+import com.lanic.image.util.Event
+import com.lanic.image.util.errorMapper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -17,7 +19,8 @@ class SearchDataSource constructor(
     val text: () -> String,
     private val searchRepository: SearchRepository,
     private val compositeDisposable: CompositeDisposable,
-    private val isSearchResult: MutableLiveData<Boolean>
+    private val isSearchResult: MutableLiveData<Boolean>,
+    private val error: MutableLiveData<Event<String>>,
 ) : PageKeyedDataSource<Int, Document>() {
 
     private var searchQuery: String = ""
@@ -40,8 +43,8 @@ class SearchDataSource constructor(
                         isSearchResult.value = true
                         callback.onResult(response.documents, null, page + 1)
                     }
-                }, onError = {
-
+                }, onError = { throwble ->
+                    errorMapper(error, throwble)
                 }).addTo(compositeDisposable)
         }
     }
@@ -51,10 +54,10 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, Document>
     ) {
         getSearchImage(searchQuery, params.key)
-            .subscribeBy(onSuccess = {
-                callback.onResult(it.documents, params.key - 1)
-            }, onError = {
-
+            .subscribeBy(onSuccess = { response ->
+                callback.onResult(response.documents, params.key - 1)
+            }, onError = { throwble ->
+                errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
 
@@ -63,10 +66,10 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, Document>
     ) {
         getSearchImage(searchQuery, params.key)
-            .subscribeBy(onSuccess = {
-                callback.onResult(it.documents, params.key + 1)
-            }, onError = {
-
+            .subscribeBy(onSuccess = { response ->
+                callback.onResult(response.documents, params.key + 1)
+            }, onError = { throwble ->
+                errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
 

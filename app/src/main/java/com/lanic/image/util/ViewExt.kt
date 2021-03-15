@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
@@ -43,4 +45,8 @@ fun Context.getShimmer(): Drawable {
                 .build()
         )
     }
+}
+
+fun Fragment.toast(msg: String) {
+    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
 }

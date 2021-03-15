@@ -9,6 +9,7 @@ import com.lanic.image.R
 import com.lanic.image.base.BaseFragment
 import com.lanic.image.databinding.FragmentSearchBinding
 import com.lanic.image.util.EventObserver
+import com.lanic.image.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +50,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
                     tvSearchResult.visibility = View.VISIBLE
                 }
             }
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
+            toast(message)
         })
 
         viewModel.clear.observe(viewLifecycleOwner, EventObserver {
