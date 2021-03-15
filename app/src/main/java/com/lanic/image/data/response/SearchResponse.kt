@@ -3,6 +3,8 @@ package com.lanic.image.data.response
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Parcelize
 data class SearchResponse(
@@ -17,7 +19,7 @@ data class Document(
     @SerializedName("collection")
     val collection: String,
     @SerializedName("datetime")
-    val datetime: String,
+    val datetime: String = "",
     @SerializedName("display_sitename")
     val displaySiteName: String,
     @SerializedName("doc_url")
@@ -30,7 +32,16 @@ data class Document(
     val thumbnailUrl: String,
     @SerializedName("width")
     val width: Int
-) : Parcelable
+) : Parcelable {
+    fun getDateFormat(): String {
+        return try {
+            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(datetime)
+            SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).format(date)
+        } catch (e: Exception) {
+            datetime
+        }
+    }
+}
 
 @Parcelize
 data class Meta(
