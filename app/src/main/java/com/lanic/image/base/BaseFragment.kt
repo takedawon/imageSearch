@@ -19,7 +19,7 @@ open class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fra
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
