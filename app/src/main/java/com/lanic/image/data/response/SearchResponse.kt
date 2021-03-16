@@ -9,13 +9,13 @@ import java.util.*
 @Parcelize
 data class SearchResponse(
     @SerializedName("documents")
-    val documents: List<Document>,
+    val searchImages: List<SearchImage>,
     @SerializedName("meta")
     val meta: Meta
 ) : Parcelable
 
 @Parcelize
-data class Document(
+data class SearchImage(
     @SerializedName("collection")
     val collection: String,
     @SerializedName("datetime")
@@ -33,14 +33,6 @@ data class Document(
     @SerializedName("width")
     val width: Int
 ) : Parcelable {
-    fun getDateFormat(): String {
-        return try {
-            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(datetime)
-            SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).format(date)
-        } catch (e: Exception) {
-            datetime
-        }
-    }
 }
 
 @Parcelize

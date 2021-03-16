@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lanic.image.R
 import com.lanic.image.base.BaseFragment
-import com.lanic.image.data.response.Document
 import com.lanic.image.databinding.FragmentSearchBinding
 import com.lanic.image.util.EventObserver
 import com.lanic.image.util.toast

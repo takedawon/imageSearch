@@ -1,9 +1,9 @@
-package com.lanic.image.ui.search
+package com.lanic.image.data.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.lanic.image.data.repository.SearchRepository
-import com.lanic.image.data.response.Document
+import com.lanic.image.data.response.SearchImage
 import com.lanic.image.data.response.SearchResponse
 import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
 import com.lanic.image.util.Event
@@ -21,13 +21,13 @@ class SearchDataSource constructor(
     private val compositeDisposable: CompositeDisposable,
     private val isSearchResult: MutableLiveData<Boolean>,
     private val error: MutableLiveData<Event<String>>,
-) : PageKeyedDataSource<Int, Document>() {
+) : PageKeyedDataSource<Int, SearchImage>() {
 
     private var searchQuery: String = ""
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Document>
+        callback: LoadInitialCallback<Int, SearchImage>
     ) {
         val page = 1
         val text = text()
@@ -41,7 +41,7 @@ class SearchDataSource constructor(
                         isSearchResult.value = false
                     } else {
                         isSearchResult.value = true
-                        callback.onResult(response.documents, null, page + 1)
+                        callback.onResult(response.searchImages, null, page + 1)
                     }
                 }, onError = { throwble ->
                     errorMapper(error, throwble)
@@ -51,11 +51,11 @@ class SearchDataSource constructor(
 
     override fun loadBefore(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, Document>
+        callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
             .subscribeBy(onSuccess = { response ->
-                callback.onResult(response.documents, params.key - 1)
+                callback.onResult(response.searchImages, params.key - 1)
             }, onError = { throwble ->
                 errorMapper(error, throwble)
             }).addTo(compositeDisposable)
@@ -63,11 +63,11 @@ class SearchDataSource constructor(
 
     override fun loadAfter(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, Document>
+        callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
             .subscribeBy(onSuccess = { response ->
-                callback.onResult(response.documents, params.key + 1)
+                callback.onResult(response.searchImages, params.key + 1)
             }, onError = { throwble ->
                 errorMapper(error, throwble)
             }).addTo(compositeDisposable)

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.lanic.image.util.ConfigUtilKt" />
         <variable
             name="item"
-            type="com.lanic.image.data.response.Document" />
+            type="com.lanic.image.data.response.SearchImage" />
     </data>
 
     <ScrollView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{String.format(@string/search_date_time, item.getDateFormat())}"
+                android:text="@{String.format(@string/search_date_time, ConfigUtilKt.getDateFormat(item.datetime))}"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_search_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:view_visibility="@{item.datetime}"

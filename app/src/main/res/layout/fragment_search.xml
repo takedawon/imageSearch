@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.lanic.image.ui.search.SearchViewModel" />
@@ -20,10 +22,10 @@
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:imeOptions="actionDone"
             android:background="@drawable/bg_bottom_stroke_1dp_color_d9dce0"
             android:hint="@string/input_search_text"
+            android:imeOptions="actionDone"
+            android:padding="12dp"
             android:singleLine="true"
             android:text="@={vm.searchText}"
             android:textStyle="bold"
@@ -36,6 +38,7 @@
             android:id="@+id/ryc_search"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="@{vm.isSearchResult == true ? View.VISIBLE : View.INVISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,10 +53,21 @@
             android:layout_height="wrap_content"
             android:text="@string/no_search_result"
             android:textSize="18sp"
-            android:visibility="gone"
+            android:visibility="@{vm.isSearchResult == false ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/ryc_search"
             app:layout_constraintEnd_toEndOf="@+id/ryc_search"
             app:layout_constraintStart_toStartOf="@+id/ryc_search"
             app:layout_constraintTop_toBottomOf="@+id/et_search" />
+
+        <ProgressBar
+            android:id="@+id/pb_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{vm.loading == false ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/ryc_search"
+            app:layout_constraintEnd_toEndOf="@+id/ryc_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_search"
+            app:layout_constraintVertical_bias="0.4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

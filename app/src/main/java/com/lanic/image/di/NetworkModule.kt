@@ -1,6 +1,7 @@
 package com.lanic.image.di
 
 import com.lanic.image.BuildConfig
+import com.lanic.image.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +16,6 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    private const val URL = "https://dapi.kakao.com"
 
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -40,7 +39,7 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .baseUrl(URL)
+            .baseUrl(Const.URL)
             .build()
     }
 }

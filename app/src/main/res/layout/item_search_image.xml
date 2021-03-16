@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.lanic.image.data.response.Document" />
+            type="com.lanic.image.data.response.SearchImage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

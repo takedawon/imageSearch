@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.lanic.image.base.BaseViewModel
+import com.lanic.image.data.datasource.SearchDataSource
 import com.lanic.image.data.repository.SearchRepository
-import com.lanic.image.data.response.Document
+import com.lanic.image.data.response.SearchImage
 import com.lanic.image.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -15,13 +17,12 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
-    ViewModel() {
+    BaseViewModel() {
 
     val compositeDisposable = CompositeDisposable()
 
@@ -34,7 +35,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _clear: MutableLiveData<Event<Unit>> = MutableLiveData()
     var clear: LiveData<Event<Unit>> = _clear
 
-    val searchImage: LiveData<PagedList<Document>> = createSearchLiveData()
+    val searchImage: LiveData<PagedList<SearchImage>> = createSearchLiveData()
 
     var searchText = MutableLiveData<String>()
 
@@ -51,6 +52,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         publishSubject
             .debounce(1000, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
+            .doOnSubscribe { showProgress() }
+            .doAfterTerminate { hideProgress() }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { searchText ->
@@ -62,15 +65,15 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
             .addTo(compositeDisposable)
     }
 
-    private fun createSearchLiveData(): LiveData<PagedList<Document>> {
+    private fun createSearchLiveData(): LiveData<PagedList<SearchImage>> {
         val config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(30)
             .setPageSize(30)
             .setPrefetchDistance(10)
             .build()
 
-        val factory = object : DataSource.Factory<Int, Document>() {
-            override fun create(): DataSource<Int, Document> {
+        val factory = object : DataSource.Factory<Int, SearchImage>() {
+            override fun create(): DataSource<Int, SearchImage> {
                 return SearchDataSource(
                     { searchText.value ?: "" },
                     searchRepository,

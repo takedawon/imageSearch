@@ -24,6 +24,6 @@
         android:label="SearchDetailActivity" >
         <argument
             android:name="item"
-            app:argType="com.lanic.image.data.response.Document" />
+            app:argType="com.lanic.image.data.response.SearchImage" />
     </activity>
 </navigation>
