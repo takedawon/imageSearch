@@ -63,7 +63,7 @@
             android:id="@+id/pb_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{vm.loading == false ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{vm.loading == true ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/ryc_search"
             app:layout_constraintEnd_toEndOf="@+id/ryc_search"
             app:layout_constraintStart_toStartOf="parent"

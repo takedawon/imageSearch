@@ -52,8 +52,6 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         publishSubject
             .debounce(1000, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
-            .doOnSubscribe { showProgress() }
-            .doAfterTerminate { hideProgress() }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { searchText ->

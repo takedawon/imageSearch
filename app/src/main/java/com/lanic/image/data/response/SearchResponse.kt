@@ -2,9 +2,8 @@ package com.lanic.image.data.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.lanic.image.ui.search.SearchImageAdapter.Companion.IMAGE
 import kotlinx.parcelize.Parcelize
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Parcelize
 data class SearchResponse(
@@ -16,22 +15,17 @@ data class SearchResponse(
 
 @Parcelize
 data class SearchImage(
+    val type: Int = IMAGE,
     @SerializedName("collection")
-    val collection: String,
+    val collection: String = "",
     @SerializedName("datetime")
     val datetime: String = "",
     @SerializedName("display_sitename")
-    val displaySiteName: String,
-    @SerializedName("doc_url")
-    val docUrl: String,
-    @SerializedName("height")
-    val height: Int,
+    val displaySiteName: String = "",
     @SerializedName("image_url")
-    val imageUrl: String,
+    val imageUrl: String = "",
     @SerializedName("thumbnail_url")
-    val thumbnailUrl: String,
-    @SerializedName("width")
-    val width: Int
+    val thumbnailUrl: String = "",
 ) : Parcelable {
 }
 

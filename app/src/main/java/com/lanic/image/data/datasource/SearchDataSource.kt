@@ -6,6 +6,7 @@ import com.lanic.image.data.repository.SearchRepository
 import com.lanic.image.data.response.SearchImage
 import com.lanic.image.data.response.SearchResponse
 import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
+import com.lanic.image.ui.search.SearchImageAdapter
 import com.lanic.image.util.Event
 import com.lanic.image.util.errorMapper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -41,7 +42,11 @@ class SearchDataSource constructor(
                         isSearchResult.value = false
                     } else {
                         isSearchResult.value = true
-                        callback.onResult(response.searchImages, null, page + 1)
+                        callback.onResult(
+                            addProgressViewHolder(response.searchImages.toMutableList()),
+                            null,
+                            page + 1
+                        )
                     }
                 }, onError = { throwble ->
                     errorMapper(error, throwble)
@@ -67,7 +72,10 @@ class SearchDataSource constructor(
     ) {
         getSearchImage(searchQuery, params.key)
             .subscribeBy(onSuccess = { response ->
-                callback.onResult(response.searchImages, params.key + 1)
+                callback.onResult(
+                    addProgressViewHolder(response.searchImages.toMutableList()),
+                    params.key + 1
+                )
             }, onError = { throwble ->
                 errorMapper(error, throwble)
             }).addTo(compositeDisposable)
@@ -77,5 +85,11 @@ class SearchDataSource constructor(
         return searchRepository.getSearchImage(query, page.toString(), LOAD_DATA_SIZE)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    private fun addProgressViewHolder(searchImages: MutableList<SearchImage>): List<SearchImage> {
+        return searchImages.apply {
+            add(SearchImage(type = SearchImageAdapter.PROGRESS))
+        }
     }
 }
