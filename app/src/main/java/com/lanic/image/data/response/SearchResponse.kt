@@ -23,7 +23,7 @@ data class SearchImage(
     @SerializedName("image_url")
     val imageUrl: String = "",
     @SerializedName("thumbnail_url")
-    val thumbnailUrl: String = "",
+    val thumbnailUrl: String = ""
 ) : Parcelable
 
 @Parcelize

@@ -17,7 +17,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -94,7 +93,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                     { searchText.value ?: "" },
                     searchRepository,
                     compositeDisposable,
-                    loadState,
+                    loadState
                 ).also {
                     searchDataSource = it
                 }

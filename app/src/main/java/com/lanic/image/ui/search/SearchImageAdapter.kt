@@ -11,17 +11,16 @@ import com.lanic.image.R
 import com.lanic.image.data.response.SearchImage
 import com.lanic.image.databinding.ItemSearchImageBinding
 
-class SearchImageAdapter :
-    PagedListAdapter<SearchImage, RecyclerView.ViewHolder>(object :
-        DiffUtil.ItemCallback<SearchImage>() {
-        override fun areItemsTheSame(oldItem: SearchImage, newItem: SearchImage): Boolean {
-            return oldItem.imageUrl == oldItem.imageUrl
-        }
+class SearchImageAdapter : PagedListAdapter<SearchImage, RecyclerView.ViewHolder>(object :
+    DiffUtil.ItemCallback<SearchImage>() {
+    override fun areItemsTheSame(oldItem: SearchImage, newItem: SearchImage): Boolean {
+        return oldItem.imageUrl == oldItem.imageUrl
+    }
 
-        override fun areContentsTheSame(oldItem: SearchImage, newItem: SearchImage): Boolean {
-            return oldItem == newItem
-        }
-    }) {
+    override fun areContentsTheSame(oldItem: SearchImage, newItem: SearchImage): Boolean {
+        return oldItem == newItem
+    }
+}) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ImageViewHolder(

@@ -24,7 +24,6 @@ fun setLoadingImageUrl(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
-
 @BindingAdapter(value = ["view_visibility"])
 fun setViewVisibility(view: View, url: String?) {
     if (url.isNullOrEmpty()) {

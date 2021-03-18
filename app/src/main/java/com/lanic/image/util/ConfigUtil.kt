@@ -1,7 +1,7 @@
 package com.lanic.image.util
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 fun getDateFormat(date: String): String {
     return try {

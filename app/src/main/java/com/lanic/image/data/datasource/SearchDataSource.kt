@@ -17,7 +17,7 @@ class SearchDataSource constructor(
     val searchText: () -> String,
     private val searchRepository: SearchRepository,
     private val compositeDisposable: CompositeDisposable,
-    private val loadState: LoadState.Callback,
+    private val loadState: LoadState.Callback
 ) : PageKeyedDataSource<Int, SearchImage>() {
 
     private var searchQuery: String = ""

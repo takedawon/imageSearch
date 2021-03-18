@@ -8,5 +8,4 @@ open class BaseViewModel : ViewModel() {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
-
 }

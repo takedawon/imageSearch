@@ -16,5 +16,4 @@ interface SearchService {
         @Query("size") size: String,
         @Header("Authorization") authorization: String = Const.KAKAO_KEY
     ): Single<SearchResponse>
-
 }

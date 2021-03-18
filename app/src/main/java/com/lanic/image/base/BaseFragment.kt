@@ -8,7 +8,6 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.lanic.image.R
 
 open class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment() {
 
