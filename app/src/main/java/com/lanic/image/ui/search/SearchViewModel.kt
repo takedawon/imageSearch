@@ -11,6 +11,7 @@ import com.lanic.image.data.datasource.SearchDataSource
 import com.lanic.image.data.repository.SearchRepository
 import com.lanic.image.data.response.SearchImage
 import com.lanic.image.util.Event
+import com.lanic.image.util.errorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -48,7 +49,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private var searchDataSource: SearchDataSource? = null
 
     val state = object : LoadState.Callback<List<SearchImage>> {
-        override fun onSuccess(value: LoadState.Success<List<SearchImage>>) {
+        override fun onSuccess(value: LoadState.Success) {
+            _isSearchResult.value = value.isExist
         }
 
         override fun onLoading(value: LoadState.Loading) {
@@ -57,6 +59,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         }
 
         override fun onFailed(value: LoadState.Failed) {
+            errorMapper(_error, value.throwable)
             Timber.tag("paging").e("실패했다.!!")
         }
     }
@@ -94,8 +97,6 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                     { searchText.value ?: "" },
                     searchRepository,
                     compositeDisposable,
-                    _isSearchResult,
-                    _error,
                     state,
                 ).also {
                     searchDataSource = it

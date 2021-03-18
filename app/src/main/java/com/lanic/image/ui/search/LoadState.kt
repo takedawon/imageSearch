@@ -1,12 +1,12 @@
 package com.lanic.image.ui.search
 
-sealed class LoadState<out T> {
-    class Success<out T>(item: T) : LoadState<T>()
+sealed class LoadState<T> {
+    class Success(val isExist: Boolean) : LoadState<Boolean>()
     class Loading(val isLoading: Boolean) : LoadState<Boolean>()
-    class Failed(throwable: Throwable) : LoadState<Nothing>()
+    class Failed(val throwable: Throwable) : LoadState<Nothing>()
 
     interface Callback<T> {
-        fun onSuccess(value: Success<T>)
+        fun onSuccess(value: Success)
         fun onLoading(value: Loading)
         fun onFailed(value: Failed)
     }

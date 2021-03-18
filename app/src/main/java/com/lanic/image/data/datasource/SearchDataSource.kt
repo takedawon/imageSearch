@@ -20,8 +20,6 @@ class SearchDataSource constructor(
     val text: () -> String,
     private val searchRepository: SearchRepository,
     private val compositeDisposable: CompositeDisposable,
-    private val isSearchResult: MutableLiveData<Boolean>,
-    private val error: MutableLiveData<Event<String>>,
     private val state: LoadState.Callback<List<SearchImage>>,
 ) : PageKeyedDataSource<Int, SearchImage>() {
 
@@ -40,15 +38,13 @@ class SearchDataSource constructor(
             getSearchImage(searchQuery, page)
                 .subscribeBy(onSuccess = { response ->
                     if (response.meta.isEnd) {
-                        isSearchResult.value = false
+                        state.onSuccess(LoadState.Success(false))
                     } else {
-                        isSearchResult.value = true
-                        state.onSuccess(LoadState.Success(response.searchImages))
+                        state.onSuccess(LoadState.Success(true))
                         callback.onResult(response.searchImages, null, page + 1)
                     }
                 }, onError = { throwble ->
                     state.onFailed(LoadState.Failed(throwble))
-                    errorMapper(error, throwble)
                 }).addTo(compositeDisposable)
         }
     }
@@ -61,11 +57,9 @@ class SearchDataSource constructor(
             .doOnSubscribe { state.onLoading(LoadState.Loading(true)) }
             .doAfterTerminate { state.onLoading(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
-                state.onSuccess(LoadState.Success(response.searchImages))
                 callback.onResult(response.searchImages, params.key - 1)
             }, onError = { throwble ->
                 state.onFailed(LoadState.Failed(throwble))
-                errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
 
@@ -77,11 +71,9 @@ class SearchDataSource constructor(
             .doOnSubscribe { state.onLoading(LoadState.Loading(true)) }
             .doAfterTerminate { state.onLoading(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
-                state.onSuccess(LoadState.Success(response.searchImages))
                 callback.onResult(response.searchImages, params.key + 1)
             }, onError = { throwble ->
                 state.onFailed(LoadState.Failed(throwble))
-                errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
 
