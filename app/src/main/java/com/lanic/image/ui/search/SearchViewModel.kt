@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -35,6 +36,9 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _clear: MutableLiveData<Event<Unit>> = MutableLiveData()
     var clear: LiveData<Event<Unit>> = _clear
 
+    private val _bottomProgress: MutableLiveData<Boolean> = MutableLiveData(false)
+    val bottomProgress: LiveData<Boolean> = _bottomProgress
+
     val searchImage: LiveData<PagedList<SearchImage>> = createSearchLiveData()
 
     var searchText = MutableLiveData<String>()
@@ -42,6 +46,20 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     var publishSubject: PublishSubject<String>
 
     private var searchDataSource: SearchDataSource? = null
+
+    val state = object : LoadState.Callback<List<SearchImage>> {
+        override fun onSuccess(value: LoadState.Success<List<SearchImage>>) {
+        }
+
+        override fun onLoading(value: LoadState.Loading) {
+            _bottomProgress.postValue(value.isLoading)
+            Timber.tag("paging").e("로딩되고있다아ㅏ!")
+        }
+
+        override fun onFailed(value: LoadState.Failed) {
+            Timber.tag("paging").e("실패했다.!!")
+        }
+    }
 
     init {
         publishSubject = PublishSubject.create()
@@ -78,6 +96,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                     compositeDisposable,
                     _isSearchResult,
                     _error,
+                    state,
                 ).also {
                     searchDataSource = it
                 }

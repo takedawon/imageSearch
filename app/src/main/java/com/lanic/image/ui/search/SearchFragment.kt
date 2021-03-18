@@ -28,26 +28,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
         binding.vm = viewModel
 
         binding.rycSearch.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3).apply {
-                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return when (imageAdapter.getItemViewType(position)) {
-                            SearchImageAdapter.IMAGE -> 1
-                            else -> 3
-                        }
-                    }
-                }
-            }
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-
-                    val manager = (layoutManager as GridLayoutManager)
-                    val totalCount = manager.itemCount
-                    val lastPosition = manager.findLastCompletelyVisibleItemPosition()
-
-                }
-            })
+            layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = imageAdapter
         }
 

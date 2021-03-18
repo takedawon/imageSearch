@@ -2,7 +2,6 @@ package com.lanic.image.data.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.lanic.image.ui.search.SearchImageAdapter.Companion.IMAGE
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,7 +14,6 @@ data class SearchResponse(
 
 @Parcelize
 data class SearchImage(
-    val type: Int = IMAGE,
     @SerializedName("collection")
     val collection: String = "",
     @SerializedName("datetime")
@@ -26,8 +24,7 @@ data class SearchImage(
     val imageUrl: String = "",
     @SerializedName("thumbnail_url")
     val thumbnailUrl: String = "",
-) : Parcelable {
-}
+) : Parcelable
 
 @Parcelize
 data class Meta(

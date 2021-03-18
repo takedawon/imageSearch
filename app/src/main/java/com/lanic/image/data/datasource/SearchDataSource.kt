@@ -5,8 +5,8 @@ import androidx.paging.PageKeyedDataSource
 import com.lanic.image.data.repository.SearchRepository
 import com.lanic.image.data.response.SearchImage
 import com.lanic.image.data.response.SearchResponse
+import com.lanic.image.ui.search.LoadState
 import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
-import com.lanic.image.ui.search.SearchImageAdapter
 import com.lanic.image.util.Event
 import com.lanic.image.util.errorMapper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -22,6 +22,7 @@ class SearchDataSource constructor(
     private val compositeDisposable: CompositeDisposable,
     private val isSearchResult: MutableLiveData<Boolean>,
     private val error: MutableLiveData<Event<String>>,
+    private val state: LoadState.Callback<List<SearchImage>>,
 ) : PageKeyedDataSource<Int, SearchImage>() {
 
     private var searchQuery: String = ""
@@ -42,13 +43,11 @@ class SearchDataSource constructor(
                         isSearchResult.value = false
                     } else {
                         isSearchResult.value = true
-                        callback.onResult(
-                            addProgressViewHolder(response.searchImages.toMutableList()),
-                            null,
-                            page + 1
-                        )
+                        state.onSuccess(LoadState.Success(response.searchImages))
+                        callback.onResult(response.searchImages, null, page + 1)
                     }
                 }, onError = { throwble ->
+                    state.onFailed(LoadState.Failed(throwble))
                     errorMapper(error, throwble)
                 }).addTo(compositeDisposable)
         }
@@ -59,9 +58,13 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
+            .doOnSubscribe { state.onLoading(LoadState.Loading(true)) }
+            .doAfterTerminate { state.onLoading(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
+                state.onSuccess(LoadState.Success(response.searchImages))
                 callback.onResult(response.searchImages, params.key - 1)
             }, onError = { throwble ->
+                state.onFailed(LoadState.Failed(throwble))
                 errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
@@ -71,12 +74,13 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
+            .doOnSubscribe { state.onLoading(LoadState.Loading(true)) }
+            .doAfterTerminate { state.onLoading(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
-                callback.onResult(
-                    addProgressViewHolder(response.searchImages.toMutableList()),
-                    params.key + 1
-                )
+                state.onSuccess(LoadState.Success(response.searchImages))
+                callback.onResult(response.searchImages, params.key + 1)
             }, onError = { throwble ->
+                state.onFailed(LoadState.Failed(throwble))
                 errorMapper(error, throwble)
             }).addTo(compositeDisposable)
     }
@@ -85,11 +89,5 @@ class SearchDataSource constructor(
         return searchRepository.getSearchImage(query, page.toString(), LOAD_DATA_SIZE)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    private fun addProgressViewHolder(searchImages: MutableList<SearchImage>): List<SearchImage> {
-        return searchImages.apply {
-            add(SearchImage(type = SearchImageAdapter.PROGRESS))
-        }
     }
 }
