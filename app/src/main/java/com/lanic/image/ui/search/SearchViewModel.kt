@@ -2,7 +2,6 @@ package com.lanic.image.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -11,7 +10,7 @@ import com.lanic.image.data.datasource.SearchDataSource
 import com.lanic.image.data.repository.SearchRepository
 import com.lanic.image.data.response.SearchImage
 import com.lanic.image.util.Event
-import com.lanic.image.util.errorMapper
+import com.lanic.image.util.toErrorResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -31,8 +30,8 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private val _isSearchResult: MutableLiveData<Boolean> = MutableLiveData()
     var isSearchResult: LiveData<Boolean> = _isSearchResult
 
-    private val _error: MutableLiveData<Event<String>> = MutableLiveData()
-    var error: LiveData<Event<String>> = _error
+    private val _error: MutableLiveData<Event<Int>> = MutableLiveData()
+    var error: LiveData<Event<Int>> = _error
 
     private val _clear: MutableLiveData<Event<Unit>> = MutableLiveData()
     var clear: LiveData<Event<Unit>> = _clear
@@ -48,19 +47,17 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     private var searchDataSource: SearchDataSource? = null
 
-    val state = object : LoadState.Callback<List<SearchImage>> {
+    val loadState = object : LoadState.Callback {
         override fun onSuccess(value: LoadState.Success) {
             _isSearchResult.value = value.isExist
         }
 
         override fun onLoading(value: LoadState.Loading) {
             _bottomProgress.postValue(value.isLoading)
-            Timber.tag("paging").e("로딩되고있다아ㅏ!")
         }
 
         override fun onFailed(value: LoadState.Failed) {
-            errorMapper(_error, value.throwable)
-            Timber.tag("paging").e("실패했다.!!")
+            _error.value = Event(toErrorResource(value.throwable))
         }
     }
 
@@ -97,7 +94,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
                     { searchText.value ?: "" },
                     searchRepository,
                     compositeDisposable,
-                    state,
+                    loadState,
                 ).also {
                     searchDataSource = it
                 }

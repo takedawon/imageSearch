@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lanic.image.R
 import com.lanic.image.data.response.SearchImage
-import com.lanic.image.databinding.ItemProgressBarBinding
 import com.lanic.image.databinding.ItemSearchImageBinding
 
 class SearchImageAdapter :

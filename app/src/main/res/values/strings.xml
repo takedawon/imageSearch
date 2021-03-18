@@ -2,8 +2,13 @@
     <string name="app_name">Search</string>
 
     <string name="kakao_app_key">ff3041b14862baa21b48c882435d9fb8</string>
+
     <string name="input_search_text">검색어를 입력해주세요.</string>
     <string name="no_search_result">검색 결과가 없습니다.</string>
     <string name="search_site_name">출처 : %s</string>
     <string name="search_date_time">문서 작성 시간 : %s</string>
+    
+    <string name="request_fail">요청에 실패하였습니다. 다시 시도해주세요.</string>
+    <string name="unstable_connection">서버와의 연결이 불안정합니다. 나중에 다시 시도해주세요.</string>
+    <string name="try_again">잠시 후 다시 시도해주세요.</string>
 </resources>

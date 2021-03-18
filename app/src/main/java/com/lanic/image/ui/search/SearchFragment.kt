@@ -5,14 +5,12 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.lanic.image.R
 import com.lanic.image.base.BaseFragment
 import com.lanic.image.databinding.FragmentSearchBinding
 import com.lanic.image.util.EventObserver
 import com.lanic.image.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(
@@ -40,8 +38,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             viewModel.publishSubject.onNext(searchText)
         })
 
-        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
-            requireContext().toast(message)
+        viewModel.error.observe(viewLifecycleOwner, EventObserver { resource ->
+            requireContext().toast(getString(resource))
         })
 
         viewModel.clear.observe(viewLifecycleOwner, EventObserver {

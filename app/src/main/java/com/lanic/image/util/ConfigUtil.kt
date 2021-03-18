@@ -5,8 +5,8 @@ import java.util.*
 
 fun getDateFormat(date: String): String {
     return try {
-        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(date)
-        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).format(date)
+        val dateString = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(date)
+        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).format(dateString)
     } catch (e: Exception) {
         date
     }
