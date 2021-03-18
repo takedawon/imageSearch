@@ -15,6 +15,16 @@ fun setImageUrl(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
+@BindingAdapter(value = ["loading_image_url"])
+fun setLoadingImageUrl(imageView: ImageView, url: String) {
+    Glide.with(imageView.context)
+        .load(url)
+        .placeholder(imageView.context.getCircularProgressDrawable())
+        .error(R.drawable.ic_error_404)
+        .into(imageView)
+}
+
+
 @BindingAdapter(value = ["view_visibility"])
 fun setViewVisibility(view: View, url: String?) {
     if (url.isNullOrEmpty()) {

@@ -9,11 +9,4 @@ open class BaseViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
-    fun showProgress() {
-        _loading.postValue(true)
-    }
-
-    fun hideProgress() {
-        _loading.postValue(false)
-    }
 }

@@ -1,9 +1,11 @@
 package com.lanic.image.util
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.lanic.image.R
@@ -13,13 +15,27 @@ fun Context.getPlaceHolderDrawable(): Drawable {
         setShimmer(
             Shimmer.ColorHighlightBuilder()
                 .setDuration(1000)
-                .setBaseColor(ContextCompat.getColor(this@getPlaceHolderDrawable, R.color.light_transparent))
+                .setBaseColor(
+                    ContextCompat.getColor(
+                        this@getPlaceHolderDrawable,
+                        R.color.light_transparent
+                    )
+                )
                 .setBaseAlpha(0.7f)
                 .setHighlightAlpha(0.6f)
                 .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
                 .setAutoStart(true)
                 .build()
         )
+    }
+}
+
+fun Context.getCircularProgressDrawable(): Drawable {
+    return CircularProgressDrawable(this).apply {
+        strokeWidth = 5f
+        centerRadius = 30f
+        setColorSchemeColors(Color.RED)
+        start()
     }
 }
 
