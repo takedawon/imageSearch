@@ -35,9 +35,9 @@ class SearchDataSource constructor(
             getSearchImage(searchQuery, page)
                 .subscribeBy(onSuccess = { response ->
                     if (response.meta.isEnd) {
-                        loadState.onSuccess(LoadState.Success(false))
+                        loadState.setState(LoadState.Success(false))
                     } else {
-                        loadState.onSuccess(LoadState.Success(true))
+                        loadState.setState(LoadState.Success(true))
                         callback.onResult(response.searchImages, null, page + 1)
                     }
                 }, onError = { throwble ->
@@ -51,8 +51,8 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
-            .doOnSubscribe { loadState.onLoading(LoadState.Loading(true)) }
-            .doAfterTerminate { loadState.onLoading(LoadState.Loading(false)) }
+            .doOnSubscribe { loadState.setState(LoadState.Loading(true)) }
+            .doAfterTerminate { loadState.setState(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
                 callback.onResult(response.searchImages, params.key - 1)
             }, onError = { throwble ->
@@ -65,8 +65,8 @@ class SearchDataSource constructor(
         callback: LoadCallback<Int, SearchImage>
     ) {
         getSearchImage(searchQuery, params.key)
-            .doOnSubscribe { loadState.onLoading(LoadState.Loading(true)) }
-            .doAfterTerminate { loadState.onLoading(LoadState.Loading(false)) }
+            .doOnSubscribe { loadState.setState(LoadState.Loading(true)) }
+            .doAfterTerminate { loadState.setState(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
                 callback.onResult(response.searchImages, params.key + 1)
             }, onError = { throwble ->

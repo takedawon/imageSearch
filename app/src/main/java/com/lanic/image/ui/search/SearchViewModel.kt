@@ -47,12 +47,18 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     private var searchDataSource: SearchDataSource? = null
 
     val loadState = object : LoadState.Callback {
-        override fun onSuccess(value: LoadState.Success) {
-            _isSearchResult.value = value.isExist
-        }
-
-        override fun onLoading(value: LoadState.Loading) {
-            _bottomProgress.postValue(value.isLoading)
+        override fun setState(state: LoadState) {
+            when (state) {
+                is LoadState.Success -> {
+                    _isSearchResult.value = state.isExist
+                }
+                is LoadState.Loading -> {
+                    _bottomProgress.postValue(state.isLoading)
+                }
+                is LoadState.Failed -> {
+                    _error.value = Event(toErrorResource(state.throwable))
+                }
+            }
         }
 
         override fun onFailed(value: LoadState.Failed) {

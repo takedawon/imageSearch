@@ -20,7 +20,7 @@
     </fragment>
     <activity
         android:id="@+id/searchDetailActivity"
-        android:name="com.lanic.image.ui.search.SearchDetailActivity"
+        android:name="com.lanic.image.ui.search.detail.SearchDetailActivity"
         android:label="SearchDetailActivity" >
         <argument
             android:name="item"

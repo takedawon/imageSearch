@@ -1,4 +1,4 @@
-package com.lanic.image.ui.search
+package com.lanic.image.ui.search.detail
 
 import android.os.Bundle
 import androidx.navigation.navArgs
