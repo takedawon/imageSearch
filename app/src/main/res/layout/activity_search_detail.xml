@@ -47,7 +47,7 @@
                 android:id="@+id/tv_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{String.format(@string/search_date_time, DateUtilKt.getDateFormat(item.datetime))}"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_search_detail"
