@@ -7,6 +7,7 @@ import com.lanic.image.data.response.SearchResponse
 import com.lanic.image.ui.search.LoadState
 import com.lanic.image.ui.search.SearchFragment.Companion.LOAD_DATA_SIZE
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -68,10 +69,15 @@ class SearchDataSource constructor(
             .doOnSubscribe { loadState.setState(LoadState.Loading(true)) }
             .doAfterTerminate { loadState.setState(LoadState.Loading(false)) }
             .subscribeBy(onSuccess = { response ->
-                callback.onResult(response.searchImages, params.key + 1)
+                if (response.meta.isEnd) {
+                    callback.onResult(response.searchImages, null)
+                } else {
+                    callback.onResult(response.searchImages, params.key + 1)
+                }
             }, onError = { throwble ->
                 loadState.onFailed(LoadState.Failed(throwble))
             }).addTo(compositeDisposable)
+
     }
 
     private fun getSearchImage(query: String, page: Int): Single<SearchResponse> {

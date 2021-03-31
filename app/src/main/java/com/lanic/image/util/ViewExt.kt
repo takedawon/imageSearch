@@ -1,8 +1,12 @@
 package com.lanic.image.util
 
+import android.app.Service
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.hardware.input.InputManager
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -41,4 +45,9 @@ fun Context.getCircularProgressDrawable(): Drawable {
 
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun View.hideKeyboard() {
+    val im = context.getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+    im.hideSoftInputFromWindow(windowToken, 0)
 }
